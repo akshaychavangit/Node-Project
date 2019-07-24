@@ -3,6 +3,9 @@ var router = express.Router();
 var validator = require('validator');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/meanmusicaldb', {useNewUrlParser: true});
+var session = require('express-session')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 /* GET home page. */
 const login = require('../models/login') 
 // console.log(login)
@@ -35,6 +38,9 @@ router.post('/register_action',function(req,res){
 		res.send("Password doesn't match")
 	else
 	{
+		bcrypt.hash(password, saltRounds, function(err, hash) {
+			console.log(hash)
+		password = hash
 
 		const item = new login({
 			name:name,
@@ -47,16 +53,37 @@ router.post('/register_action',function(req,res){
 		console.log(item)
 		item.save().then(data=>{
 			console.log("saved")
+			res.send("Registered Successfully")
 		})
-		
-
-
+	});
 		
 	}
-
-
-
 });
+
+
+
+router.post('/login_action',function(req,res){
+
+	username = req.body.username
+
+	password = req.body.password
+	// console.log(username + password)
+	login.findOne({username:username}, function (err, docs) {
+		console.log(docs.username)
+
+		if(docs.length!=0)
+		{
+			dbpass = docs.password
+			if(password==dbpass)
+			{
+				req.session.username = docs.username
+				req.session.address = docs.address
+				req.session.phone = docs.phoneno
+			}
+		}
+		
+	  });
+})
 
 module.exports = router;
 

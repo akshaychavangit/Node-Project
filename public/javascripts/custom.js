@@ -16,4 +16,24 @@ $("#btnregister").click(function(){
 
 	}) 
 })
+
+
+
+$("#btnlogin").click(function(){
+
+	// alert()
+	data = $("#login-form").serialize()
+	
+	$.ajax({
+		url : "/login_action",
+		data : data,
+		type : "post",
+		success : function(response){
+			alert(response)
+			if(response.trim() == 1)
+				window.location.href = "/redirect"
+
+		}
+	})
+})
 })
