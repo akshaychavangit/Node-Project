@@ -1,0 +1,7 @@
+ 
+const login = new Schema({
+  id: ObjectId,
+  title: String,
+  body: String,
+  date: Date
+});
