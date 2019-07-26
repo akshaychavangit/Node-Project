@@ -8,15 +8,6 @@ var logins = require('../models/login.js');
 //validator
 var validator = require('validator');
 
-//session
-var session = require('express-session');
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: 'KOCProjects',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false, maxAge: 600000 }
-}))
 
 //bcrypt
 const bcrypt = require('bcrypt');
@@ -28,9 +19,9 @@ module.exports.RegisterCntrl = function(req,res){
 	email = req.body.email
 	phoneno = req.body.phoneno
 	address = req.body.address
-	username = req.body.username
-	password = req.body.password
-    cpassword = req.body.cpassword
+	username = req.body.username2
+	password = req.body.password2
+    cpassword = req.body.cpassword2
 
     if(validator.isAlpha(name)==false)
 		res.send("Please enter proper name")
@@ -51,14 +42,20 @@ module.exports.RegisterCntrl = function(req,res){
 			// console.log(hash)
         password = hash
         var user = mongoose.model('logintbl', logins.modlogin);
-        // console.log(user)
-        user.findOne({username}, 'username', function (err, user) {
-            if (err) return handleError(err);
-            if(user==null)
-            {
-
-
-                const regdata = new logins({
+        user.findOne({username:username},'username password', function (err, users) {
+			// console.log(users)
+			if (err) 
+			{
+				console.log(err)
+				res.end("Something Went Wrong")
+				return
+			}
+			else
+			{
+				// console.log(users)
+				if(users == null)
+				{
+						const regdata = new logins({
                     	name:name,
                     	email:email,
                     	phoneno : phoneno,
@@ -69,14 +66,15 @@ module.exports.RegisterCntrl = function(req,res){
                     // console.log(regdata)
                     regdata.save().then(data=>{
                     	console.log("saved")
-                    	res.send("Registered Successfully")
+                    	res.end("Registered Successfully")
                     })
-                
-            }
-            else
-            {
-                res.send("Username already taken")
-            }
+				}
+				else
+				{
+					res.end("exist")
+					
+				}
+			}
             
           });
 

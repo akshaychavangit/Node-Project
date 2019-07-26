@@ -27,9 +27,22 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+var session = require('express-session')
+
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'KOCProjects',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false, maxAge: 600000 }
+}))
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
+
+
 app.use(bodyParse.urlencoded({extended : false}));
 
 
