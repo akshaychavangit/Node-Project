@@ -13,5 +13,5 @@ const LoginSchema = Schema({
 
 
 });
-
-module.exports = mongoose.model('logintbl',LoginSchema,'logintbl');
+var modlogin = mongoose.model('logintbl',LoginSchema,'logintbl');
+module.exports = modlogin
