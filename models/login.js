@@ -8,7 +8,8 @@ const LoginSchema = Schema({
 	phoneno : Number,
 	address:String,
 	username:String,
-	password:String
+	password:String,
+	flag : Number
 
 
 

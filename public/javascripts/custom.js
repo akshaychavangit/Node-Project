@@ -10,7 +10,9 @@ $("#btnregister").click(function(){
 			data : formdata,
 			type : "post",
 			success : function(response){
-				alert(response)
+				// alert(response)
+				$('#err2').html(response)
+				
 					
 			}
 
@@ -36,9 +38,16 @@ $("#btnlogin").click(function(){
 		data : data,
 		type : "post",
 		success : function(response){
-			alert(response)
+			// alert(response)
+			// $('#err1').html(response)
 			if(response.trim() == 1)
+			{
 				window.location.href = "/redirect"
+			}
+			else
+			{
+				$('#err1').html(response)
+			}
 
 		}
 

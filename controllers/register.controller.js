@@ -14,7 +14,19 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+	user: 'cyclopsattendance@gmail.com',
+	pass: 'Akshay@123'
+	}
+});
+
+
 module.exports.RegisterCntrl = function(req,res){
+	var baseurl = req.headers.origin
+	console.log(baseurl)
     name = req.body.name
 	email = req.body.email
 	phoneno = req.body.phoneno
@@ -61,12 +73,28 @@ module.exports.RegisterCntrl = function(req,res){
                     	phoneno : phoneno,
                     	address:address,
                     	username:username,
-                    	password:password
+						password:password,
+						flag:0
                     });
                     // console.log(regdata)
                     regdata.save().then(data=>{
-                    	console.log("saved")
-                    	res.end("Registered Successfully")
+						console.log(regdata._id)
+						mailOptions = {
+							from: 'cyclopsattendance@gmail.com', // sender address
+							to: email, // list of receivers
+							subject: 'Activation link of Brownie Point', // Subject line
+							html: `<a href = "${baseurl}/activate/${regdata._id}">Activate your account</a>`
+						};
+						
+						transporter.sendMail(mailOptions, (err, info) => {
+							if(err) 
+								console.log(err) 
+							else 
+							{
+								res.end("Register successully. Check your mail to activate.")
+							} 
+						})
+                    	// res.end("Registered Successfully")
                     })
 				}
 				else

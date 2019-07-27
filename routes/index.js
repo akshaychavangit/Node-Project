@@ -3,9 +3,13 @@ var router = express.Router();
 var validator = require('validator');
 
 //register controller
-var Registercntrl = require('../controllers/register.controller.js')
+var Registercntrl = require('../controllers/register.controller.js');
 //login controller
-var Logincntrl = require('../controllers/login.controller.js')
+var Logincntrl = require('../controllers/login.controller.js');
+//redirect controller
+var Redirectcntrl = require('../controllers/redirect.controller.js');
+//activate controller
+var Activatecntrl = require('../controllers/activate.controller.js');
 
 
 router
@@ -21,8 +25,16 @@ router
 router
 	.route("/login_action")
 	.post(Logincntrl.LoginCntrl)
+
+
+router
+	.route("/redirect")
+	.get(Redirectcntrl.RedirectCntrl)
 	
-	
+
+router
+	.route("/activate/:id")
+	.get(Activatecntrl.ActivateCntrl)
 		
 	
 module.exports = router;

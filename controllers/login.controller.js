@@ -31,7 +31,7 @@ module.exports.LoginCntrl = function(req,res){
 
     
     var user = mongoose.model('logintbl', modlogin.modlogin);
-    user.findOne({username:username}, 'username password address phoneno', function (err,result) {
+    user.findOne({username:username}, 'username password address phoneno flag', function (err,result) {
         // console.log(err+"hello error")
         console.log(result)
         if(result==null)
@@ -46,13 +46,18 @@ module.exports.LoginCntrl = function(req,res){
                 // res == true
                     if(results == true)
                     {
+                        if(result.flag == 1)
+    				    {
                         console.log(result.username)
                         
                             req.session.username = result.username
                             req.session.address = result.address
                             req.session.phone = result.phoneno
                             // console.log(session)
-                            res.send("1")
+                            res.end("1")
+                        }
+                        else
+                        {res.end("Please activate link from mail")}
                     }
                     else
                     {
