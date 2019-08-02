@@ -1,0 +1,76 @@
+<%
+	include header
+%>
+
+<section class="middle-container">
+	<div class="container">
+		 <div class="row">
+         	<div class="col-md-9">
+         		<form method="post" name="mypform" id="mypform" enctype="multipart/form-data">
+					  <div class="form-group">
+					    <label for="product">Product:</label>
+					    <input type="text" class="form-control" name="txtproduct" id="txtproduct">
+					  </div>
+
+					  <div class="form-group">
+					    <label for="product">Category:</label>
+					    <select name="ddlcategory" class="form-control" id="ddlcategory">
+					    	<option value="-1" >Select</option>
+					    </select>
+					  </div>
+
+					  <div class="form-group">
+					    <label for="product">Type:</label>
+					    <input type="text" class="form-control" name="txttype" id="txttype">
+					  </div>
+
+					  <div class="form-group">
+					    <label for="product">Price:</label>
+					    <input type="text" class="form-control " name="txtprice" id="txtprice"  >
+					  </div>
+
+					  <div class="form-group">
+					    <label for="product">Image:</label>
+					    <input type="file" class="form-control" name="prodfile" id="prodfile" accept="image/*">
+					  </div>
+
+					  <div class="form-group">
+					    <label for="product">Description:</label>
+					    <textarea class="form-control" name="txtdescription" id="txtdescription"></textarea>
+					  </div>
+
+					  <button type="submit" class="btn btn-primary" id="btnppadd">Save Product</button>
+					  <div id="err" class="text-danger"></div>
+				</form>
+        	</div>
+    	</div>
+	</div>
+</section>
+
+<%
+	include footer
+%>
+
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url : "/getCategory",
+			data  : "",
+			type : "post",
+			success : function(response){
+				// alert(response)
+				results = JSON.parse(response)
+				// alert(results)
+
+				for(index in results)
+				{
+					// console.log(index)
+					// console.log(results[index].id + ", " + results[index].category)
+					id = results[index].id
+					category = results[index].category
+					$("#ddlcategory").append(`<option value=${id}>${category}</option>`)
+				}
+			}
+		})
+	})
+</script>

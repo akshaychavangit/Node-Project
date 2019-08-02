@@ -8,11 +8,11 @@ module.exports.RedirectCntrl = function(req,res){
 	if(username != undefined)
 	{
 		if(username == "admin")
-			res.redirect("/category")
+			res.redirect("/admin")
 		else
 		{
 
-			res.redirect("/products")
+			res.redirect("/users")
 		}
 	}
 	else

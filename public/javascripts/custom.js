@@ -52,4 +52,28 @@ $("#btnlogin").click(function(){
 		}
 
 	})	})
+
+
+
+
+	$("#btnadd").click(function(){
+		// alert()
+		formdata = $("#myform").serialize()
+		// alert(formdata)
+		$.ajax({
+	
+				url : "./addcategory_action",
+				data : formdata,
+				type : "post",
+				success : function(response){
+					// alert(response)
+					$('#err').html(response)
+					
+						
+				}
+	
+	
+		}); 
+	
+	})
 })
