@@ -76,4 +76,28 @@ $("#btnlogin").click(function(){
 		}); 
 	
 	})
+
+
+	$("#mypform").on('submit', function(e){
+		e.preventDefault();
+
+		// return;
+		var form_data = new FormData(this);                  
+		// alert(form_data);	
+		$("#err").html("Please wait...")
+		$.ajax({
+			url: './addproduct_action', 
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,                         
+			type: 'post',
+			success: function(response){
+				
+				
+					$("#err").html(response)
+
+			}
+		 });
+	})
 })

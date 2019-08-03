@@ -54,7 +54,7 @@
 <script type="text/javascript">
 	$(function(){
 		$.ajax({
-			url : "/getCategory",
+			url : "./getCategory",
 			data  : "",
 			type : "post",
 			success : function(response){
@@ -64,10 +64,10 @@
 
 				for(index in results)
 				{
-					// console.log(index)
+					console.log(index)
 					// console.log(results[index].id + ", " + results[index].category)
-					id = results[index].id
-					category = results[index].category
+					id = results[index]._id
+					category = results[index].name
 					$("#ddlcategory").append(`<option value=${id}>${category}</option>`)
 				}
 			}

@@ -1,0 +1,201 @@
+<%
+    include header
+%>
+<!-- Middle -->
+
+<section class="middle-container">
+	<div class="container">
+		 <div class="row">
+         <div class="col-md-9">
+          <h3 class="cate-head">Shopping Cart</h3>
+           <hr/>
+   
+  <%
+      total = 0
+      carts.forEach(function(cart){
+
+        total += cart.qty * cart.price
+
+  %> 
+   <div class="car-box">
+       <img src="<%=cart.image%>">
+       <div class="box-content"> 
+        <div class="product-title"><%=cart.name%></div>
+        <div class="discription">
+           <div>Amount  <span>&#8377; <%=cart.price%></span>  </div> 
+           <div>
+            Qantity
+            <span>
+                  <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-number proddelete"  data-type="minus" for="<%=cart.prodid%>">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control"  id="quantity" name="quantity" min="1" max="100" value="<%=cart.qty%>">
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-number prodedit" data-type="plus" data-field="" for="<%=cart.prodid%>" qty="<%=cart.qty%>">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+            </span>
+           </div> 
+           <div>Total Amount  <span>&#8377; <%=cart.qty*cart.price%></span>    </div> 
+        </div>
+       </div>
+   </div>
+
+  <%
+      })
+  %>
+     
+           </div>
+
+           <div class="col-md-3">
+
+<div id="cart-sidebar">
+    <div class="cart-sidebarbox">
+    <h4>Price Details</h4>   
+    <div class="bill-part">
+        <div class="row">
+            <div class="col-md-8" style="font-weight: 600;">Amount</div>
+            <div class="col-md-4" >&#8377; <%=total%></div>
+        </div>
+
+      <div class="row">
+       <div class="col-md-8" style="font-weight: 600;">(+) GST</div>
+      <div class="col-md-4" >&#8377; <%=(total * 18 / 100)%></div>
+        </div>
+
+    </div>
+    <div class="row">
+ <div class="col-md-8" style="font-weight: 600;">Total Amount</div>
+    
+    <div class="col-md-4">&#8377; <%=(total - (total * 18 / 100))%></div>
+    <a class="btn btn-primary btn-block text-light" href="/placeorder"> Place Order</a>
+    </div> 
+    </div>
+
+        <div class="cart-sidebarbox">
+    <h4>Delivery Address</h4>   
+      <span id="lbladdress"><%=address[0].address%></span>
+    <a class="hm-login-link"  data-toggle="modal" href="#myModal" style="color: #007bff">Change Address</a>
+</div>
+</div>
+        </div>
+    </div>
+	</div>
+</section>
+
+<!-- Middle -->
+
+
+
+
+
+      <div class="modal" id="myModal"  style="z-index: 10000;">
+        <form id="addressform" name="addressform" method="post" role="form" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content ">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Change Address</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+      <div class="panel">
+        
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                
+                  <div class="form-group">
+                    <textarea type="text" name="address" id="address" tabindex="1" class="form-control" placeholder="New Address" value=""></textarea>
+                  </div>
+                  
+                  <div class="form-group  text-center">
+                    
+                  <button type="button" name="btnchange" id="btnchange"  class="form-control btn btn-login">Save Address</button>
+                      
+                  </div>
+
+                  <div class="form-group text-danger" id="err"></div>                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+
+    </div>
+  </div>
+  </form>
+</div>
+
+<%
+    include footer
+%>
+
+<script>
+    $(document).ready(function(){
+      // alert()
+
+      $("#btnchange").click(function(){
+        // alert()
+
+          data = $("#addressform").serialize()
+
+
+        $.ajax({
+          url : "/changeaddress",
+          data : data,
+          type : "put",
+          success : function(response){
+            // alert(response)
+
+            $("#err").html(response)
+            $("#lbladdress").html($("#address").val())
+
+            setTimeout(function(){
+                $("#err").html("")
+                $("#myModal").modal('toggle')
+            }, 2000)
+
+          } 
+        })
+      })
+
+
+      $(".proddelete").click(function(){
+        // alert($(this).attr("for"))
+
+        data = "id=" + $(this).attr("for")
+        current = $(this)
+        $.ajax({
+          url : "/cartdelete",
+          data : data,
+          type : "delete",
+          success : function(response){
+            // alert(response)
+            current.parentsUntil(".car-box").parent().remove()
+            localStorage.setItem("count", localStorage.getItem("count") - 1)
+            $("#cartcount").html(localStorage.getItem("count"))
+            window.location.href = "/cart"
+          }
+        }) 
+      })
+
+      $(".prodedit").click(function(){
+        // alert($(this).attr("for"))
+
+        data = $(this).attr("for") + "/" + $(this).attr("qty")
+        window.location.href = "/details/" + data
+      })
+    })
+</script>

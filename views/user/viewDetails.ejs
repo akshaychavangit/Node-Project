@@ -1,0 +1,104 @@
+<%
+    include header
+%>
+
+  
+  <section class="middle-container">
+      <div class="container">
+          <input type="hidden" id="prodid" value="<%=prod.id%>">
+
+        <div class="row ">
+          <div class="col-md-4 product "><img src="<%=prod.image%>" alt="" class="img-fluid zoomimg">
+          </div>
+          <div class="col-md-8 info">
+            <div class="info-wrapper">
+              <h2 class="product-title"><%=prod.name%></h2>
+           
+              <p class="lead">
+               <%=prod.description%>
+                 
+               </p>
+              <div class="discription">
+             <div>Amount  <span>₹ <span id="price"><%=prod.price%></span> </span></div>
+
+             <div>
+              Qantity
+              <span>
+                    <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                      <button type="button" class="quantity-left-minus btn btn-number" data-type="minus" data-field="">
+                                          <i class="fa fa-minus"></i>
+                                      </button>
+                                  </div>
+                                  <input type="text" class="form-control" id="quantity" name="quantity" min="1" max="100" value="<%=qty%>">
+                                  <div class="input-group-append">
+                                      <button type="button" class="quantity-right-plus btn btn-number" data-type="plus" data-field="">
+                                          <i class="fa fa-plus"></i>
+                                      </button>
+                                  </div>
+                              </div>
+              </span>
+             <div>
+              <div class="discription">
+             <div>Amount  <span>₹ <span id="finalamount"><%=prod.price%>  </span> </span></div>
+             <div class="col-md-12" style="padding: 0;">
+              <button class="btn btn-primary btn-block" id="btnaddtocart">Add to Cart  <i class="fa fa-shopping-cart"></i></button>
+          </div>
+            
+          </div>
+        </div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<%
+    include footer
+%>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    price = $("#price").html()
+    // alert(price)
+
+    $(".quantity-left-minus, .quantity-right-plus").click(function(){
+
+      qty = $("#quantity").val()
+      // alert(qty)
+
+      finalamount = price * qty
+      $("#finalamount").html(finalamount)
+    })
+
+    $("#btnaddtocart").click(function(){
+
+      prodid = $("#prodid").val()
+      qty = $("#quantity").val()
+      // alert(prodid)
+      
+      $.ajax({
+        url : "/addtocart",
+        data : "prodid=" + prodid + "&qty=" + qty,
+        type : "post",
+        success : function(respose){
+          // alert(respose)
+          alert(respose)
+          result = JSON.parse(respose)
+          console.log(result)
+          console.log(result.count)
+          console.log(result.msg)
+          $("#cartcount").html(result.count)
+          localStorage.setItem("count",result.count)
+        }
+      })
+    })
+
+    //<input type="hidden" id="prodid" value="8">
+
+  })
+</script>

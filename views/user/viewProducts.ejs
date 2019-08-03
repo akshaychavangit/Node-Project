@@ -1,0 +1,120 @@
+<%
+    include header
+%>
+
+
+<section class="middle-container">
+  
+	<div class="container">
+
+		 <div class="row">
+		<div class="col-md-3">
+<div class="cat-list">
+	<h3>Our Products</h3>
+	<ul>
+        <li><a href="/products">All Products</a></li>
+
+        <% 
+            category.forEach(function(cat){
+
+
+        %>
+        <li><a href="/products/<%=cat.id%>"><%=cat.category%></a></li>        
+	
+        <%
+            })
+        %>
+    </ul>
+</div>
+
+<div class="cat-list">
+  <h3>Price Range</h3>
+  <ul>
+    <li><a href="">All</a></li>
+    <li><a href="">1000 - 5000</a></li>
+    <li><a href="">5000 - 10000</a></li>
+    <li><a href="">10000 - 50000</a></li>
+    <li><a href="">50000 And above</a></li>
+  </ul>
+</div>
+        </div>
+    <div class="col-md-9 cat-products " style="overflow: hidden;">
+      <!-- <h3 class="cate-head " > -->
+         <div class="block-30 block-30-sm item  " style="background-image: url(&#39;../../assets/images/All Products.jpg&#39;);" data-stellar-background-ratio="0.5">
+            <div class="container">
+              <div class="row align-items-center ">
+                <div class="col-md-10 text-center  ">
+                   <span class="subheading-sm  ">
+                    All Products                
+            </span>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+    <hr>
+   
+
+<div class="row">
+
+
+<!-- start -->
+<%
+    product.forEach(function(prod){
+
+%>
+  <div class="col-md-4 col-sm-6"> 
+
+   <div class="product-grid ">
+            <!-- <div class="spinner-border text-danger"></div> -->
+                <div class="product-image">
+                    <a>
+                        <img class="pic-1" src="<%=prod.image%>">                      
+                    </a>
+                    <ul class="social">                       
+                        <li><a href="/details/<%=prod.id%>" data-tip="Add to Cart"><i class="fa fa-shopping-cart text-center" style="font-size: 28px;"></i></a></li>
+                    </ul>
+                  
+                </div>
+              
+                <div class="product-content">
+                    <h3 class="title"><a href="/details/<%=prod.id%>"><%=prod.name%></a></h3>
+                       <h6 class="title"> Type: <%=prod.type%>  </h6>
+                  
+                    <div class="price"> <i class="fa fa-inr"></i> <%=prod.price%>                        <span> <i class="fa fa-inr"></i> <%=prod.price%></span>
+                    </div>
+                     
+
+                    <a class="add-to-cart" href="/details/<%=prod.id%>">+ Add To Cart</a>
+                </div>
+            </div>
+        </div>
+
+        <%
+    
+    })
+        %>
+<!-- end -->
+
+ 
+
+  
+
+    </div>
+        </div>
+         </div>
+	</div>
+</section>
+
+
+
+<%
+    include footer
+%>
+
+<script>
+    $(function(){
+        localStorage.setItem("count", <%=count[0].cartcount%>)
+        $("#cartcount").html(localStorage.getItem("count"))
+    })
+</script>
